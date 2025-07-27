@@ -20,8 +20,16 @@ class MainActivity : AppCompatActivity() {
         for (i in 1..20) {
             datas.add("Item $i")
         }
+        val recyclerAdapter =  MyAdapter(datas)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = MyAdapter(datas)
+        binding.recyclerView.adapter = recyclerAdapter
+
+        binding.addBtn.setOnClickListener {
+            recyclerAdapter.addItem("Item ${datas.size + 1}")
+        }
+        binding.moveBtn.setOnClickListener {
+            binding.recyclerView.smoothScrollToPosition(0)
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

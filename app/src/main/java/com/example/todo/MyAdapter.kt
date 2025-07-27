@@ -7,11 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.todo.databinding.ActivityMainBinding
 import com.example.todo.databinding.ItemRecyclerViewBinding
 
-class MyAdapter(private val datas: List<String>) : RecyclerView.Adapter<MyAdapter.CustomViewHolder>() {
+class MyAdapter(private val datas: MutableList<String>) : RecyclerView.Adapter<MyAdapter.CustomViewHolder>() {
     // 뷰 홀더의 뷰에 데이터를 출력하려고 자동으로 호출
     inner class CustomViewHolder(private val binding: ItemRecyclerViewBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: String) {
+        fun bind(item: String, position: Int) {
             binding.itemData.text = item
+            binding.deleteIc.setOnClickListener { removeItem(position) }
         }
     }
 
@@ -25,6 +26,18 @@ class MyAdapter(private val datas: List<String>) : RecyclerView.Adapter<MyAdapte
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        holder.bind(datas[position])
+        holder.bind(datas[position], position)
+    }
+
+    fun addItem(item: String) {
+        datas.add(item)
+        notifyItemInserted(datas.size - 1)
+    }
+
+    fun removeItem(position: Int) {
+        if (position in datas.indices) {
+            datas.removeAt(position)
+            notifyItemRemoved(position)
+        }
     }
 }
