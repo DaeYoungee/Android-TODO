@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -15,16 +16,14 @@ class MainActivity : AppCompatActivity() {
 
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.visibleBtn.setOnClickListener {
-            binding.targetView.visibility = View.VISIBLE
+        val datas = mutableListOf<String>()
+        for (i in 1..20) {
+            datas.add("Item $i")
         }
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = MyAdapter(datas)
 
-        binding.invisibleBtn.setOnClickListener {
-            binding.targetView.visibility = View.INVISIBLE
-        }
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
